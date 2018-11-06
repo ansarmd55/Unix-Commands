@@ -1,0 +1,731 @@
+1)ps -ef |grep applgdev |grep FND |wc -l
+      1
+2)ps -ef |grep applgdev |grep -v grep |awk '{print $2}'
+
+3)Cache clear and Jsp compilation
+  Backup _pages inside $COMMON_TOP and create an empty directory
+  cd $FND_TOP/patch/115/bin     
+  ./ojspCompile.pl --compile --flush -p 20 -log jspcompile_27jun2014.log
+
+4)To compile individual jsp
+   ojspCompile.pl --compile -s 'ibeCpUserReg_UTCrm
+   .jsp' -log /export/home/applprj1/jspcomp_ibeCpUserReg_UTC.log --flush
+   ojspCompile.pl --compile -s 'ibeCpUserReg_UTC.jsp' -log /export/home/applprj1/jspcomp_ibeCpUserReg_UTC.log --flush
+   ./ojspCompile.pl --compile -s 'ibeCOtdOrdAwaitShippingDetails_GES.jsp' -log ibeCOtdOrdAwaitShippingDetails_GES.log --flush
+   ./ojspCompile.pl --compile -s 'ibeCOtdOrdAwaitShippingDetails_GES.jsp' -log ibeCOtdOrdAwaitShippingDetails_GES.log --flush
+
+5)To check MWA processes
+   /usr/ucb/ps -auxww|grep mwa|grep prj1
+
+6)To check the patch conflict with oracle_home        
+   opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir ./
+   opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir <patch#>
+
+7)To check if a database patch is applied
+  opatch lsinventory -details|grep 14158826
+
+8)To check the active port
+  grep -i active $CONTEXT_FILE
+
+9)Start,Stop and status check of database of all instances
+  srvctl start database -d gdev
+  srvctl stop database -d gdev
+  srvctl status database -d gdev
+
+10)Start,Stop and status check of a particular instance
+   srvctl start instance -d apsqait -i apsqait1
+   srvctl stop instance -d apsqait -i apsqait1
+   srvctl sststus instance -d apsqait -i apsqait1
+
+To stop the componenets from ASM
+srvctl stop asm -n <nodename> 
+
+[crsdv@kusnwk01 ~]$ srvctl status asm
+ASM is not running.
+
+
+11)Checking Type of data base(rac or single)
+   srvctl config database -d PRJ4 -a
+   
+srvctl modify database -d secdwqa -a 'SECDWQADATA_DG,INFDWQA_DG,SECDWPRD_DATA,SECDWPRD_ARCH,SECDWPRD
+12)srvctl getenv database -d apsprj4
+   srvctl setenv database -d apsprj4 -t ORA_NLS10=/apsprj4/oracle/product/11.2.0/nls/data/9idata
+   
+13)To start the db in mount mode through srvctl
+   srvctl start database -d db_name -o mount
+-------------------------------------------------------------------------------
+srvctl start instance -d database_name -i instance_name [,instance_name-list] 
+[-o start_options] [-c connect_string]
+--------------------------------------------------------------------------------
+   
+14)Count number of cpu
+   grep -i processor /proc/cpuinfo|grep -v model|wc -l
+   cat /proc/cpuinfo
+       
+
+15)Logging in to remote server from a different server
+   ssh loginid@hostname
+   ssh brana@kusnwa0z
+
+16)If any instance is down and not getting up the check for the HEALTH file in below path in R12-:
+   CD $INST_TOP/portal
+   ls health*
+
+17)Generating tkprof file form a raw trace
+   tkprof apsgdev1_ora_14472_TRACE_01.trc apsgdev1_ora_14472_TRACE_01.txt explain=apps/d7pa_URuswaY6p sys=no sort='prsela,exeela, fchela'
+   tkprof prj12_ora_23031_501890706.trc prj12_ora_23031_501890706.txt explain=apps/N3w_GDEV_ebjy sort= prsela,exeela,fchela
+
+18)FTP command
+   scp apsqait1_ora_11628_TRACE_01.trc orapprj2@kusnwk01.1utcfs.com:/apsprj2/oracle/diag/rdbms/apsprj2/apsprj21/trace
+
+19)Deleting files older than 3 days
+   find /path/to/files* -mtime +1 -exec rm {} \;
+   find //output/out -mtime +10 -name "*.dat*" -exec rm -f "{}" ";" 
+   find /qait/apps/qaitcomn/admin/log/prod_cinohapppi01sec -mtime +3 -exec ls -l {} \;
+   find /prod/oracle/product/10.2.0/prod/admin/prod/bdump -name "cdmp_20111108084216" -type d -mtime +10 -exec ls -ld {} \;
+
+find ./ -type f -mtime +30 -exec rm -f {} \; -print
+find . -type f -mtime +60 -name "*.xml" -exec rm -f {} \; -print
+find . -type f -mtime +3 -name "*.out" -ex
+ec rm -f {} \; -print
+find . -type f -mtime +60 -name "*.log" -exec rm -f {} \; -print
+find . -type f -mtime +3 -name "*.req" -exec rm -f {} \; -print
+find /u04/dataloader/RDM  -name '*.ack'  -mtime 26 -exec ls -ltr {} \;
+find /u04/dataloader/RDM  -name '*.xml'  -mtime +13 -exec rm -f {} \;
+find /u04/dataloader/RDM  -name '*.ack'  -mtime 26|wc -l
+
+bfv3YMl88S 
+
+
+20)To kill a particular vnc session completely
+   vncserver -kill :port number
+
+21)To kill all the sessions of any particular instance
+   pkill -U apapprj4
+
+22)prints the shared libraries required by each program or shared library specified on the command line
+   ldd rateupd
+   
+23)To check the lock details
+   /var/adm/messages  (to check the ip which locked)
+
+24)Merge patches
+   admrgpch -s mergesource -d mergedest -merge_name additional_recomm_patch
+   Remove the older log file if exits
+
+25)Change password of frontend user
+   FNDCPASS apps/<prodpass> 0 Y system/<pass> SYSTEM APPLSYS <new_apps_pass>
+   FNDCPASS apps/Ov3rc0me 0 Y system/syst3mdw USER ameena02 Pfizer1234
+
+26)Checking Discoverer versions
+   kusmna0q:/discqa/oracle/Middleware/as_1/bin $ strings -a dis51ws | grep -i 'Discoverer version'
+   Discoverer Version:Server 11.1.1.7.0
+
+27)Form and pll compilation scripts
+   /prj1/apps/apps/tech_st/10.1.2/bin/frmcmp_batch module=/prj1/apps/apps/apps_st/appl/au/12.0.0/forms/US/CSCCCCRC.fmb userid=APPS/***** output_file=/prj1/apps/apps/apps_st/appl/csc/12.0.0/forms/US/CSCCCCRC.fmx module_type=form batch=yes compile_all=special
+   
+   frmcmp_batch module=OKSSLCRD.pll userid=apps/N3w_GDEV_ebjy script=yes module_type=library output_file=OKSSLCRD.pld
+   frmcmp_batch module=OKSSLCRD.pld Userid=apps/N3w_GDEV_ebjy output_file=OKSSLCRD.pll parse=yes module_Type=LIBRARY 
+   frmcmp_batch module=OKSSLCRD.pll userid=apps/N3w_GDEV_ebjy output_file=OKSSLCRD.plx module_type=LIBRARY batch=yes compile_all=special
+
+28)Some Imp commands
+   cat file1.txt
+   abhay  kolkata   tcs
+   mrinal bangalore infy
+   kutchu chandigarh ibm
+   sandeep           mumbai  cts
+   ravi   kolkata       rss
+   
+   cat file1.txt|awk -F" " '{print $2,$1,$3}'
+   cat file1.txt|awk -F" " '{print $2,"and",$1,"and",$3}'
+   cat file1.txt|awk -F" " '{print NR,$1,$2}'
+   cat file1.txt|awk -F" " '{print NF,$1,$2}'
+   
+   cat file1.txt|sed -n '4p'
+   cat file1.txt|sed '2d'
+   cat file1.txt|sed '/sandeep/d'
+   cat file1.txt|sed 's/s/S/g' 
+   
+   #sed 'ADDRESSs/REGEXP/REPLACEMENT/FLAGS' filename
+   #sed 'PATTERNs/REGEXP/REPLACEMENT/FLAGS' filename
+
+
+    s is substitute command
+    / is a delimiter
+    REGEXP is regular expression to match
+    REPLACEMENT is a value to replace
+
+FLAGS can be any of the following
+
+    g Replace all the instance of REGEXP with REPLACEMENT
+    n Could be any number,replace nth instance of the REGEXP with REPLACEMENT.
+    p If substitution was made, then prints the new pattern space.
+    i match REGEXP in a case-insensitive manner.
+    w file If substitution was made, write out the result to the given file.
+    We can use different delimiters ( one of @ % ; : ) instead of /
+=======================================================================================
+
+29)Some more commands
+   cat file2.txt
+   abhay 20000
+   vikram 10000
+   singh 50000
+   mrinal 40000
+   uday 30000
+
+   cat file2.txt|awk -F" " 'BEGIN{a=0}  {a=a+1} END{print a/5}'
+   cat file2.txt|cut -d" " -f2 file2.txt|awk -F" " 'BEGIN{a=0} {a=a+$1} END {print a/5}'
+   
+30)Check if agent is running
+   emctl status agent
+   
+30)Replace a value in VI editor(all foo will be replaced by bar)
+   :%s/foo/bar/g
+   :%s/\.\///g
+   sed -i 's/\.\///' bijay_new.txt  
+   sed -i 's/\.\//cp \/u04\/dataloader\/ODW\/Inbound\//' bijay_new.txt | sed 's/xml/xml \./' 
+
+
+
+31)Exporting data from table using exp utility
+   exp userid=applsys/S3cur1ty4app5 tables=FND_LOG_MESSAGES_16SEP2013 file=/tmp/FND_LOG_MESSAGES_16SEP2013.dmp log=/tmp/FND_LOG_MESSAGES_16SEP2013.log
+
+32)Exporting data from table using expdp utility(create a dba directory else put the dump file in an existing directory)
+   expdp apps/S3cur1ty4app5 DIRECTORY=UTC_GL_CONCUR_DIR DUMPFILE=FND_LOG_MESSAGES_16SEP2013.dmp TABLES=FND_LOG_MESSAGES
+   impdp apps/S3cur1ty4app5 tables=UTCFS_RESP_APP_TEMP_LOAD directory=UTC_GL_CONCUR_DIR dumpfile=UTCFS_RESP_APP_TEMP_LOAD.dmp(transfer the dump file in this directory)
+   
+   Import 12C
+   impdp dumpfile=IXH_IMP_DUMP:722765_ixh_cust.dmp logfile=IXH_IMP_DUMP:722765_ixh_cust$ORACLE_SID-`date '+%d%m%Y_%H%M%S'`.log
+
+
+   impdp apps/S3cur1ty4app5 tables=UTCFS_RESP_APP_TEMP_LOAD directory=UTC_GL_CONCUR_DIR dumpfile=UTCFS_RESP_APP_TEMP_LOAD.dmp TABLE_EXISTS_ACTION=TRUNCATE
+
+   expdp system/<system pwd> DUMPFILE=REFRESH_SCHEMA.DMP DIRECTORY=DATA_PUMP_DIR SCHEMAS=REFRESH_SCHEMA LOGFILE=REFRESH_SCHEMA.log
+   DATA_PUMP_DIR
+   expdp system/oracle DUMPFILE=REFRESH_SCHEMA.DMP DIRECTORY=DATA_PUMP_DIR TABLES=EMP LOGFILE=REFRESH_SCHEMA.log
+   expdp apps/S3cur1ty4app5 DIRECTORY=UTC_GL_CONCUR_DIR DUMPFILE=FND_LOG_MESSAGES_16SEP2013.dmp TABLES=FND_LOG_MESSAGES
+
+
+   TABLE_EXISTS_ACTION={SKIP | APPEND | TRUNCATE | REPLACE}
+
+   SKIP leaves the table as is and moves on to the next object. This is not a valid option if the CONTENT parameter is set to DATA_ONLY.
+   APPEND loads rows from the source and leaves existing rows unchanged.
+   TRUNCATE deletes existing rows and then loads rows from the source.
+   REPLACE drops the existing table and then creates and loads it from the source. This is not a valid option if the CONTENT parameter is set to DATA_ONLY.
+
+33)Provide the workflow files
+   WFLOAD apps/<apps pwd> 0 Y DOWNLOAD <wft file name> <itemtype>/<workflow name>/<Short name>
+   WFLOAD apps/$PASSWORD 0 Y FORCE UTC_PO_Approval.wft
+
+   
+34)check the item type using the below query
+   select DISPLAY_NAME,CUSTOM_LEVEL,NAME from WF_ITEM_TYPES_TL where NAME='OEOL';
+   
+find ./ -name "*trm*"| xargs rm
+find ./ -name "*.gz" -exec gunzip {} \;
+
+35)Checking the disc groups
+   sudo su - crsqa
+   [crsqa@kusmnd0t ~]$ . oraenv
+   ORACLE_SID = [crsqa] ? +ASM1
+   The Oracle base remains unchanged with value /crsqa/oracle/grid
+   [crsqa@kusmnd0t ~]$
+   [crsqa@kusmnd0t ~]$
+   [crsqa@kusmnd0t ~]$
+   [crsqa@kusmnd0t ~]$ asmcmd -p
+   ASMCMD [+PROD_ARCH/QAIT/ARCHIVELOG/2013_10_30] > rm *
+   You may delete multiple files and/or directories.
+   Are you sure? (y/n) y
+   ASMCMD [+PROD_ARCH/QAIT/ARCHIVELOG] > lsdg
+   
+36)Stop/Start Aventx(FC processes)
+   a)Stopping
+     fcmgr -admin 
+     lc
+     stop
+     lc
+   b)Starting
+     fcmgr -admin 
+     lc
+     start
+     lc
+
+37)Stop/Start(Dstr processes)
+   a)Stop
+     cd $FCHOME/oa/extproc/AventXDaemon
+     ./stop.sh
+   b)Start
+     cd $FCHOME/oa/extproc/AventXDaemon
+     ./start.sh
+
+38)sqlldr in R12 rather than sqlload
+
+39)One line command for Database Patch application
+   $ORACLE_HOME/OPatch/opatch apply -oh $ORACLE_HOME -local 12979199 -ocmrf $ORACLE_HOME/OPatch/ocm/bin/ocm.rsp -silent
+
+40)ADADMIN AR(product specific form generation) form generation 
+
+- Log out of applications
+- Log in as applmgr account
+- Make sure the env is sourced
+- execute adadmin
+- Go through and answer all the prompts (most choose default)
+- Choose option #1 - Generate applications file menu
+- Choose option #2 - Generate form files
+- Choose defualt workers
+- "Generate oracle forms objects ? <-- y
+- regenerate Oracle Forms PL/SQL library files [Yes] ,--- Y
+- regenerate Oracle Forms menu files [Yes] <-- y
+- regenerate Oracle Forms executable files [Yes] <-- Y
+- Enter list of products ('all' for all products) [all] <-- AR
+- Generate specific forms objects for each selected product [No] <-- N
+- Enter list of languages ('all' for all of the above) [all] <-- ALL
+- Is this the correct set of languages [Yes] <-- Yes
+
+41)stack size checking
+   ulimit -a
+   cat /etc/security/limits.conf
+
+42)To check the trace file name if trace name is not generated in the name as concurrent request id
+    grep -i CONC_REQUEST_ID=149781910 qait1_ora_30542.trc
+
+
+GES_ITEM_MASTER_RESTRICT
+
+43)to check printers
+    lpstat -p ein5026 -l
+
+44)Check printer services offline or online
+    svcs -a|grep print
+
+45)banner "test"|lp -d hky5052;
+   lpq -P hky5052  
+
+
+46)Form direct link
+   http://oracle-gdev-int-dev.1utcfs.com/forms/frmservlet 
+
+47)prtconf | grep -i mem
+
+48)Unzip a file in a particular location
+   unzip filename.zip -d <absolute locn for extract>
+
+49)Delete archive log commands
+   delete force noprompt archivelog all
+
+50)Verify ldt upload logs in these below ways
+   cat `ls -lrth *.log |grep "Jun 28" |awk '{print $9}'` |grep -i "Concurrent request completed successfully" |wc -l
+   cat `ls -lrth *.log |grep "Jun 28" |awk '{print $9}'` |grep -i "could not" |wc -l
+   cat `ls -lrth *.log |grep "Jun 28" |awk '{print $9}'` |grep -i "error" |wc -l
+   cat `ls -lrth *.log |grep "Jun 28" |awk '{print $9}'` |grep -i "error"
+   An error occurred at line 33 in file UTCFSCREDITLIMIT_TEST.ldt
+   ls -l UTCFSCREDITLIMIT_TEST.ldt
+
+   grep -i UTCFSCREDITLIMIT_TEST.ldt *.log
+   
+   cat `ls -lrth *.log |grep "Apr  4" |awk '{print $9}'` |grep -i "could not"
+   cat `ls -lrth *.log |grep "Apr  4" |awk '{print $9}'` |grep -i "Concurrent request completed successfully" |wc -l
+
+51)to mount/unmount a file system
+   mount 172.18.59.23:/backup/stage/ /mnt
+   umount /mnt
+   
+   mount 10.129.192.254:/export/mm_pfzr_X_dataloaderT4/data /u04/dataloader
+
+52)To Check the process status & memory consumed by the process
+   prstat -s size -a -n 10
+
+53)Delete archive log from RMAN
+   delete archivelog until time 'sysdate-3' device type disk; 
+
+54)Check archivelog if applied from RMAN
+   list backup of archivelog all;  (These always shows the list of archives in the backup pieces which always there in RMAN)
+
+55)RMAN Syntax to check all backup summary
+   list backup summary 
+
+56)RMAN Syntax to delete backup pieces
+   delete backup tag='<tag name>';
+
+57)locate tnsnames.ora
+
+58)more filename
+
+59)Count the size of a particular number of files: 
+   ls -ltrh|tail -16000|awk '{ total += $5 }; END { print total }'  
+
+60)Sorting Files
+   ls -lS
+
+61)grep -i processor /proc/cpuinfo|grep -v model|wc -l
+   
+62)cat /proc/meminfo|grep -i memtotal
+   free -g
+
+63)to remove the unwanted/junk characters present in file name 
+   for file in *.xml* ; do mv $file ${file//.xml*/.xml}; done
+
+64)Change the timestamp of any file
+   touch -f
+   
+65)Transfer files to different server through sftp
+   sftp DSOPICAL@mmv0pfecdeu011a
+   provide password
+   sftp> ls
+   22dec22  DSOPI    test1
+   sftp>
+   sftp> cd 22dec22
+   sftp> ls
+   put PFIZER_ZIPNY98035_014-0070_Site_20141201T144538.xml
+   or mput *xml
+   
+66)Check mail server(SMTP Service)
+   Login as root user
+   cd /usr/sbin
+   postfix start
+   postfix/postfix-script: starting the Postfix mail system
+   
+   else type this from cmd prompt
+   service sendmail start
+   
+67)Check the files and move directly to destination
+   cp `ls -ltrh *ICON*Study*|awk '{print $9}'` /u04/dataloader/bijay22
+   
+68)Unix Server Reboot command
+   shutdown -r now
+   reboot
+   
+   shutdown -r +5 "Server is going down for kernel upgrade. Please save your work ASAP." 
+   
+69)Check the last reboot
+   last reboot
+   
+70)Check passwd inactive period for unix users  
+   /etc/login.defs 
+
+71)Check passwd related detyails for unix user
+   chage -l <username>
+   
+72)Steps to create Unix User 
+    I)create user and change password as below
+    	locate useradd
+        /usr/sbin/useradd DANAAC
+        passwd saswas
+
+    II)Add that user to the group owner to provide him readwrite access if required
+        locate usermod
+/usr/sbin/usermod -a -G oinstall dhandk01 
+/usr/sbin/usermod -a -G PECSCAL YELLAS03 
+/usr/sbin/usermod -a -G CSDWUSER YELLAS03 
+/usr/sbin/usermod -a -G ICONCAL YELLAS03 
+/usr/sbin/usermod -a -G DSOPICAL YELLAS03 
+/usr/sbin/usermod -a -G FIRECREST YELLAS03 
+/usr/sbin/usermod -a -G PAREXELCAL YELLAS03 
+/usr/sbin/usermod -a -G ixhsftp YELLAS03 
+    
+CSDWUSER  
+PECSCAL   
+ICONCAL   
+DSOPICAL  
+FIRECREST 
+PAREXELCAL
+
+
+
+73)Step to delete user
+    /usr/sbin/  -G "" SWAMIS10
+	
+74)Steps to delete a group
+   groupdel <group name>
+   
+mmv0pfecded301a
+mmv0pfecded301b
+
+
+	
+	
+74)Export the home before executing Opatch utility
+   export ORACLE_HOME=/u01/OBIEE/MIDDLEWARE_HOME/Oracle_BI1
+   export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+
+75)Check if multiple patches applied in a single command
+   opatch lsinventory -details|egrep "19190111|19190053|19190025|19190010|18657616"	
+   
+   chown oracle:oinstall p18057570_111170_Linux-x86-64.zip
+
+76)Avoid argument list too long error while deleting
+   find . -type f | xargs rm
+   
+77)Search a string inside a long binary file
+   strings -a log-251214T120001.log|grep "PFIZER_A035111_UNITED-STATES-STUDY-SITE-001_Site_20141201T144545"  
+
+78)Here althought we switched to oracle user,still we are borrowing acncde shell ,hence this is not oracle's own shell
+   [acncde@mmv0pfecdet3080 ~]$ su oracle
+
+79)Here acncde shell is completely removed and oracle user creates a new shell and switches to it own shell.We can verify that by doing "pwd" command.
+   [acncde@mmv0pfecdet3080 ~]$ sudo su - oracle
+   
+80)Modify the time stamp of files
+   touch -m *
+   
+81)nohup cp `find ./ -name "*ICON*ack*"|awk '{print $9}'|tail -5000|head -1200` /u04/dataloader/9JAN_ICON_ACK_1000_Files/next_1000 &
+ cp `ls -ltrh *xml|awk '{print $9}'` /u04/dataloader/RDM/Inbound
+
+82)some cut commnds
+   cut -f2 -d":" 
+   cut -c4,6 file.txt
+   cut -c4 file.txt
+   cut -c4- file.txt
+   cut -c-6 file.txt
+   cut -c- file.txt
+   cut -d' ' -f2,3 file.txt
+
+83)Copy/Move files
+   nohup xargs -a 123.txt cp -t /u03/sftpdata/DSOPICAL/DSOPI/Site/DSOPI_latest_Site_bkp/ &
+   xargs -a /tmp/abc.txt mv -t /u01/Informatica/server/infa_shared/SrcFiles_remaining
+
+   
+   57530
+82)opatch napply -skip_duplicate
+
+83)fgrep -i alsc *.*
+find -type f -exec dos2unix {} \;
+
+84)Change format if a script has been copied form windows box to unix
+   dos2unix *.*
+   
+85)cp `find ./ -name "*.xml*"|tail -10|cut -c3-` /u04/dataloader/All_bkp/
+
+86)Directly move files in a single command
+   mv $(find ./u04/dataloader/RDM/parexel_14nov_bkp -maxdepth 1 -type f -name "*Site*" | head -5000) ./u04/dataloader/RDM/parexel_14nov_bkp
+   cp $(find ./u04/dataloader/IXH/Archive/StudyOutbound/Outbound/  -printf '%s %p\n'| sort -nr | head -114 ) ./u04/dataloader/10plus_mbfiles.txt
+   find /u04/dataloader/IXH/Archive/StudyOutbound/Outbound/ -printf '%s %p\n'| sort -nr | head -114 
+   cp $(find /u04/dataloader/R52_DLBackup_ODW/ICON_Backup/Site_ICON/ -maxdepth 1 -type f -name "*Site*" ) /u04/dataloader/ODW/Inbound/
+   find . -name "*.xml"  -exec cp {} /u04/dataloader/ODW/Inbound/ \; 
+	
+86)Start w32time service from windows box command prompt
+   open cmd prompt
+   execute ---- "net start w32time"
+   
+   or windows key + r -> type services.msc -> select windows time -> right click and start
+   
+87)Check disk space usage
+   du -a /u01/ | sort -n -r | head -n 30
+   
+88)if files present time stamp is may 10 10:24
+   touch -t 201502081024 filename
+   
+   touch -t 201512030348 IXH_DB_CODE
+   
+   4.0K Dec  3 03:45 
+
+   Decomposition of 200805101024
+   2008 year , 05 - month number , date, time
+   
+89)Rename all the files in single line
+   for file in *.xml* ; do mv $file ${file//.xml*/.xml}; done
+   
+   export HISTTIMEFORMAT="%h/%d - %H:%M:%S" 
+   
+2900
+9338576782
+
+   
+   
+   grep -e "PFIZER_A4061008_1004_Site_20151210T111803.xml" /home/*/.bash_history
+   
+90)SOA Deployment (R5Mock2 folder should be inside stage under ixhbuild and uncomment the composite from make_all.properties before deploying)
+   ./soa_build DeployAll test3 R5Mock2
+   
+91)To unlock user account
+   exec unlock_user('RDM_PRELDG');
+   
+92)Check zero kb file
+   ls -lthr|awk '{print $5}'|grep -v "K" > /u04/dataloader/All_BKPS/bij.txt
+   
+93)Check the top consuming space
+93)Check the top consuming space
+   du -a . | sort -n -r | head -n 10
+   
+94)Lock unix user 
+   chage -l mudaks
+   
+95)Expires the user on below date
+   usermod -L -e 2015-04-23 mudak
+   
+96)Purging run
+   nohup sqlplus ixhsoa_soainfra/'IXH_TEST3'@tst3ixh @/u01/SOA/purge/purge_indx-rblt_stats_space-reclaim.sql &
+   
+97)Check SOA version
+   /u01/SOA/Middleware/Oracle_SOA1/bin
+   ./soaversion.sh
+   
+   
+98)Check java version
+   /u01/SOA/Middleware/java/bin/java -version
+   
+99)check SOA version
+   /u01/SOA/Middleware/Oracle_SOA1/OPatch/opatch lsinventory|egrep "Oracle SOA Suite 11g|16702086|13633000"
+   
+100)Check /u01 size,RAM and CPU size
+    df -kh /u01;grep -i processor /proc/cpuinfo|grep -v model|wc -l;cat /proc/meminfo|grep -i memtotal
+	
+101)check user status
+    passwd -S user
+
+102)If the user shell in seventh feild is set to /sbin/nologin or /bin/false set it back to /bin/bash or /bin/ksh
+    usermod -s /bin/bash usrename
+
+103)if you are able to see ! in the second field starting that indicates that password is disabled, you have to enable it back by using passwd with -u option
+    grep ‘surendra’ /etc/passwd
+	
+104)passwd -S -a | grep LK | cut -d " " -f1 and/or  passwd -S -a |awk '/LK/{print $1}'
+    chage -l username
+
+105)enable passwd
+    passwd -u username
+
+106)grep ‘username’ /etc/shadow
+
+107)Replace the content of a file witgh a new word 
+    find ./ -type f -exec sed -i 's/ALSC_IXH/ixh_cust/g' {} \;
+108)nohup grep -Rail esical.local * > results.results5 &
+
+109)Move first 5000 files 
+    mv $(find /u04/sftpdata/sftpindata/DSOPICAL/DSOPI/Site/Inbound_bkp/  -maxdepth 1 -type f -name "*Site*" | head -5000) ./Site
+	
+	 mv -f $(find /u03/sftpdata/Mock_deployment_R52/Pfizer_mock_batch6_17dec_bkp/ -maxdepth 1 -type f -name "*xml*" | head -5000) .
+110)Untarring a specific file from zip file
+    tar -tzf Pfizer_LSHDEV-29052015024002.tar.gz | grep tnsnames.ora
+    tar -xzf Pfizer_LSHDEV-29052015024002.tar.gz u01/app/oracle/EBS/inst/apps/devdw1_mmv0pfeesil0070/ora/10.1.2/network/admin/tnsnames.ora
+	
+111)Mount
+    mount 10.129.192.253:/export/mm_pfzr/prod_app_backups PRD_LSH_BACKUP
+	
+112)Start the services and redirect nohup.out to nowhere
+    nohup ./startWebLogic.sh > /dev/null 2>&1&
+	
+113)Check huge file count
+    find /u04/dataloader/RDM/PAT_DQ_Backup/DSOPI_BATCH4-5_STUDY_RDM/ -maxdepth 1 -type f -name "PFIZER*Site*xml"|wc -l
+
+114)Move huge files like 60k plus from any folder
+    find ./ -name "ICON*Site*xml" > ICON_File.txt
+	nohup xargs -a PFIZER_FILES_Site.txt mv -t /u04/dataloader/RDM/PAT_DQ_Backup/DSOPI_BATCH3_STUDY_RDM/ &
+	nohup xargs -a abc.txt mv -t /u04/dataloader/RDM/Backup_R52_E2E/e2e_dryrun_site_dsopi_9nov/ &
+	
+115)Check cpu count from cmd prompt
+    wmic cpu get caption
+	
+116)Check linux version
+    cat /etc/redhat-release;grep -i processor /proc/cpuinfo|grep -v model|wc -l;cat /proc/meminfo|grep -i memtotal
+	
+117)/usr/include/linux/limits.h
+
+118)Count only files not directories
+    ls -l | grep ^[^d] | wc -l
+	
+119)Search any pattern
+    nohup grep -Rail ixh_cust * > results.results & 
+	
+120)Insert a text at the begining of each line in unix 
+    :%s!^!bijaya 
+	
+121)Move zero kb files
+    mv `ls -lthr|awk '{print $5,$9}'|grep -w 0|awk '{print $2}'` /u04/dataloader/bkp/zero_byte_files
+	
+122)Check address doctor version
+
+    1.Go to <INFA_HOME>/services/shared/bin (for IDQ Address Doctor library) or <INFA_HOME>/server/bin (for PowerCenter integrated Address Doctor library)
+    2.Run the command strings -a libAddressDoctor5.so | grep EngineVersion 
+
+123) Use of expect command in unix
+     SSH Login into Another Machine
+     
+     #!/usr/bin/expect
+     set timeout 20
+     set ip [lindex $argv 0]
+     set user [lindex $argv 1]
+     set password [lindex $argv 2]
+     spawn ssh "$user\@$ip"
+     expect "Password:"
+     send "$password\r";
+     interact
+     
+     Please find below link for more detail..
+     
+     http://www.thegeekstuff.com/2010/10/expect-examples/
+
+	 
+124)tar -xvzf Pfizer_OBIEETEST4-03052016125952.tar.gz -C /u01/
+
+125)export ORACLE_HOME=/u01/SOA/Middleware/oracle_common
+export PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch:$PATH
+opatch lsinventory|grep 13490778
+
+126)Flush RAM 
+   as root user
+   echo 1 > /proc/sys/vm/drop_caches
+   echo 3 > /proc/sys/vm/drop_caches 
+127)
+tar -tzf lotsofdata.tar.gz | grep contract
+This will list the details of all files whose names contain your known part. Then you extract what you want using:
+
+$ tar -xzf lotsofdata.tar.gz <full path and filename from your list above>
+
+128)nohup tar -cvzf /u01/app/oracle/EBS/bkp_to_dev3/inst.tar.gz --exclude='u01/app/oracle/EBS/inst/apps/prddw_mmv0pfecdel0070/logs/appl/conc/*' /u01/app/oracle/EBS/inst/ &
+
+128)Replace gvv with gv in sqlplus prompt 
+   c/gvv/gv
+   
+129)Start/Stop Individual OHS services
+    BI Service:
+    opmnctl stopproc ias-component=coreapplication_obis1
+    opmnctl startproc ias-component=coreapplication_obis1
+    
+    Javahost:
+    opmnctl stopproc ias-component=coreapplication_obijh1
+    opmnctl startproc ias-component=coreapplication_obijh1
+    
+    Presentation Service:
+    opmnctl stopproc ias-component=coreapplication_obips1
+    opmnctl startproc ias-component=coreapplication_obips1
+    
+    Scheduler Service:
+    opmnctl stopproc ias-component=coreapplication_obisch1
+    opmnctl startproc ias-component=coreapplication_obisch1
+    
+    Cluster Service:
+    opmnctl startproc ias-component=coreapplication_obiccs1
+    opmnctl stopproc ias-component=coreapplication_obiccs1
+
+130)$/etc/init.d/nscd status
+$/etc/init.d/nscd start
+$/etc/init.d/nscd stop
+
+131)split -b 2048m <file> <split-name>
+
+131)cat <part1> <part2> <part3> >  <final part>
+
+132)Fluch RAM
+    sync; echo 1 > /proc/sys/vm/drop_caches
+	sync; echo 2 > /proc/sys/vm/drop_caches
+	sync; echo 3 > /proc/sys/vm/drop_caches
+	
+133)Sho space in sorted manner
+    du -a /u01/ | sort -nr | head -n 35
+134)To collect stuck thread
+    java/bin/jstack 22561 > Thread1.txt
+
+135)Delete and disable java permission
+   exec  DBMS_JAVA.DISABLE_PERMISSION(277);
+   exec dbms_java.delete_permission(278); 
+   commit;	
+   
+ 136)Solution if weblogic is not starting
+     cd /u01/local/config/domains/soa_domain/servers/AdminServer/
+mkdir security 
+chmod 755 security 
+cd security 
+vi boot.properties 
+username=weblogic
+password=???
